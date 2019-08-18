@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src='data:text/javascript;base64,IWZ1bmN0aW9uKHQsZSl7InVzZSBzdHJpY3QiOyJvYmplY3QiPT10eXBlb2YgbW9kdWxlJiYib2JqZWN0Ij09dHlwZW9mIG1vZHVsZS5leHBvcnRzJiYobW9kdWxlLmV4cG9ydHM9dC5kb2N1bWVudD92b2lkIDA6ZnVuY3Rpb24odCl7aWYoIXQuZG9jdW1lbnQpdGhyb3cgbmV3IEVycm9yKCJqUXVlcnkgcmVxdWlyZXMgYSB3aW5kb3cgd2l0aCBhIGRvY3VtZW50Iil9KX0oInVuZGVmaW5lZCIhPXR5cGVvZiB3aW5kb3c/d2luZG93OnRoaXMpLGZ1bmN0aW9uKHQpeyJ1c2Ugc3RyaWN0Ijt0LmJyZWFraW5nTmV3cz1mdW5jdGlvbihlLGkpe3ZhciBzPXtlZmZlY3Q6InNjcm9sbCIsZGlyZWN0aW9uOiJsdHIiLGhlaWdodDo0MCxmb250U2l6ZToiZGVmYXVsdCIsdGhlbWVDb2xvcjoiZGVmYXVsdCIsYmFja2dyb3VuZDoiZGVmYXVsdCIsYm9yZGVyV2lkdGg6MSxyYWRpdXM6Mixzb3VyY2U6Imh0bWwiLHJzczJqc29uQXBpS2V5OiIiLHBsYXk6ITAsZGVsYXlUaW1lcjo0ZTMsc2Nyb2xsU3BlZWQ6MixzdG9wT25Ib3ZlcjohMCxwb3NpdGlvbjoiYXV0byIsekluZGV4Ojk5OTk5fSxuPXRoaXM7bi5zZXR0aW5ncz17fTt2YXIgcj10KGUpLG89KGU9ZSxyLmNoaWxkcmVuKCIuYm4tbGFiZWwiKSksYT1yLmNoaWxkcmVuKCIuYm4tbmV3cyIpLGw9YS5jaGlsZHJlbigidWwiKSxjPWwuY2hpbGRyZW4oImxpIiksZD1yLmNoaWxkcmVuKCIuYm4tY29udHJvbHMiKSxmPWQuZmluZCgiLmJuLXByZXYiKS5wYXJlbnQoKSxoPWQuZmluZCgiLmJuLWFjdGlvbiIpLnBhcmVudCgpLHU9ZC5maW5kKCIuYm4tbmV4dCIpLnBhcmVudCgpLGc9ITEscD0hMCxtPWwuY2hpbGRyZW4oImxpIikubGVuZ3RoLGI9MCx5PSExLHc9ZnVuY3Rpb24oKXtpZigwPG8ubGVuZ3RoJiYoInJ0bCI9PW4uc2V0dGluZ3MuZGlyZWN0aW9uP2EuY3NzKHtyaWdodDpvLm91dGVyV2lkdGgoKX0pOmEuY3NzKHtsZWZ0Om8ub3V0ZXJXaWR0aCgpfSkpLDA8ZC5sZW5ndGgpe3ZhciBlPWQub3V0ZXJXaWR0aCgpOyJydGwiPT1uLnNldHRpbmdzLmRpcmVjdGlvbj9hLmNzcyh7bGVmdDplfSk6YS5jc3Moe3JpZ2h0OmV9KX1pZigic2Nyb2xsIj09PW4uc2V0dGluZ3MuZWZmZWN0KXt2YXIgaT0wO2MuZWFjaChmdW5jdGlvbigpe2krPXQodGhpcykub3V0ZXJXaWR0aCgpfSksaSs9MTAsbC5jc3Moe3dpZHRoOml9KX19LGs9ZnVuY3Rpb24oKXt2YXIgdD1wYXJzZUZsb2F0KGwuY3NzKCJtYXJnaW5MZWZ0IikpO3QtPW4uc2V0dGluZ3Muc2Nyb2xsU3BlZWQvMixsLmNzcyh7bWFyZ2luTGVmdDp0fSksdDw9LWwuZmluZCgibGk6Zmlyc3QtY2hpbGQiKS5vdXRlcldpZHRoKCkmJihsLmZpbmQoImxpOmZpcnN0LWNoaWxkIikuaW5zZXJ0QWZ0ZXIobC5maW5kKCJsaTpsYXN0LWNoaWxkIikpLGwuY3NzKHttYXJnaW5MZWZ0OjB9KSksITE9PT1nJiYod2luZG93LnJlcXVlc3RBbmltYXRpb25GcmFtZSYmcmVxdWVzdEFuaW1hdGlvbkZyYW1lKGspfHxzZXRUaW1lb3V0KGssMTYpKX0sdj1mdW5jdGlvbigpe3ZhciB0PXBhcnNlRmxvYXQobC5jc3MoIm1hcmdpblJpZ2h0IikpO3QtPW4uc2V0dGluZ3Muc2Nyb2xsU3BlZWQvMixsLmNzcyh7bWFyZ2luUmlnaHQ6dH0pLHQ8PS1sLmZpbmQoImxpOmZpcnN0LWNoaWxkIikub3V0ZXJXaWR0aCgpJiYobC5maW5kKCJsaTpmaXJzdC1jaGlsZCIpLmluc2VydEFmdGVyKGwuZmluZCgibGk6bGFzdC1jaGlsZCIpKSxsLmNzcyh7bWFyZ2luUmlnaHQ6MH0pKSwhMT09PWcmJih3aW5kb3cucmVxdWVzdEFuaW1hdGlvbkZyYW1lJiZyZXF1ZXN0QW5pbWF0aW9uRnJhbWUodil8fHNldFRpbWVvdXQodiwxNikpfSxxPWZ1bmN0aW9uKCl7c3dpdGNoKHA9ITAsbi5zZXR0aW5ncy5lZmZlY3Qpe2Nhc2UidHlwb2dyYXBoeSI6bC5maW5kKCJsaSIpLmhpZGUoKSxsLmZpbmQoImxpIikuZXEoYikud2lkdGgoMzApLnNob3coKSxsLmZpbmQoImxpIikuZXEoYikuYW5pbWF0ZSh7d2lkdGg6IjEwMCUiLG9wYWNpdHk6MX0sMTUwMCk7YnJlYWs7Y2FzZSJmYWRlIjpsLmZpbmQoImxpIikuaGlkZSgpLGwuZmluZCgibGkiKS5lcShiKS5mYWRlSW4oKTticmVhaztjYXNlInNsaWRlLWRvd24iOm08PTE/bC5maW5kKCJsaSIpLmFuaW1hdGUoe3RvcDozMCxvcGFjaXR5OjB9LDMwMCxmdW5jdGlvbigpe3QodGhpcykuY3NzKHt0b3A6LTMwLG9wYWNpdHk6MCxkaXNwbGF5OiJibG9jayJ9KSx0KHRoaXMpLmFuaW1hdGUoe3RvcDowLG9wYWNpdHk6MX0sMzAwKX0pOihsLmZpbmQoImxpOnZpc2libGUiKS5hbmltYXRlKHt0b3A6MzAsb3BhY2l0eTowfSwzMDAsZnVuY3Rpb24oKXt0KHRoaXMpLmhpZGUoKX0pLGwuZmluZCgibGkiKS5lcShiKS5jc3Moe3RvcDotMzAsb3BhY2l0eTowfSkuc2hvdygpLGwuZmluZCgibGkiKS5lcShiKS5hbmltYXRlKHt0b3A6MCxvcGFjaXR5OjF9LDMwMCkpO2JyZWFrO2Nhc2Uic2xpZGUtdXAiOm08PTE/bC5maW5kKCJsaSIpLmFuaW1hdGUoe3RvcDotMzAsb3BhY2l0eTowfSwzMDAsZnVuY3Rpb24oKXt0KHRoaXMpLmNzcyh7dG9wOjMwLG9wYWNpdHk6MCxkaXNwbGF5OiJibG9jayJ9KSx0KHRoaXMpLmFuaW1hdGUoe3RvcDowLG9wYWNpdHk6MX0sMzAwKX0pOihsLmZpbmQoImxpOnZpc2libGUiKS5hbmltYXRlKHt0b3A6LTMwLG9wYWNpdHk6MH0sMzAwLGZ1bmN0aW9uKCl7dCh0aGlzKS5oaWRlKCl9KSxsLmZpbmQoImxpIikuZXEoYikuY3NzKHt0b3A6MzAsb3BhY2l0eTowfSkuc2hvdygpLGwuZmluZCgibGkiKS5lcShiKS5hbmltYXRlKHt0b3A6MCxvcGFjaXR5OjF9LDMwMCkpO2JyZWFrO2Nhc2Uic2xpZGUtbGVmdCI6bTw9MT9sLmZpbmQoImxpIikuYW5pbWF0ZSh7bGVmdDoiNTAlIixvcGFjaXR5OjB9LDMwMCxmdW5jdGlvbigpe3QodGhpcykuY3NzKHtsZWZ0Oi01MCxvcGFjaXR5OjAsZGlzcGxheToiYmxvY2sifSksdCh0aGlzKS5hbmltYXRlKHtsZWZ0OjAsb3BhY2l0eToxfSwzMDApfSk6KGwuZmluZCgibGk6dmlzaWJsZSIpLmFuaW1hdGUoe2xlZnQ6IjUwJSIsb3BhY2l0eTowfSwzMDAsZnVuY3Rpb24oKXt0KHRoaXMpLmhpZGUoKX0pLGwuZmluZCgibGkiKS5lcShiKS5jc3Moe2xlZnQ6LTUwLG9wYWNpdHk6MH0pLnNob3coKSxsLmZpbmQoImxpIikuZXEoYikuYW5pbWF0ZSh7bGVmdDowLG9wYWNpdHk6MX0sMzAwKSk7YnJlYWs7Y2FzZSJzbGlkZS1yaWdodCI6bTw9MT9sLmZpbmQoImxpIikuYW5pbWF0ZSh7bGVmdDoiLTUwJSIsb3BhY2l0eTowfSwzMDAsZnVuY3Rpb24oKXt0KHRoaXMpLmNzcyh7bGVmdDoiNTAlIixvcGFjaXR5OjAsZGlzcGxheToiYmxvY2sifSksdCh0aGlzKS5hbmltYXRlKHtsZWZ0OjAsb3BhY2l0eToxfSwzMDApfSk6KGwuZmluZCgibGk6dmlzaWJsZSIpLmFuaW1hdGUoe2xlZnQ6Ii01MCUiLG9wYWNpdHk6MH0sMzAwLGZ1bmN0aW9uKCl7dCh0aGlzKS5oaWRlKCl9KSxsLmZpbmQoImxpIikuZXEoYikuY3NzKHtsZWZ0OiI1MCUiLG9wYWNpdHk6MH0pLnNob3coKSxsLmZpbmQoImxpIikuZXEoYikuYW5pbWF0ZSh7bGVmdDowLG9wYWNpdHk6MX0sMzAwKSk7YnJlYWs7ZGVmYXVsdDpsLmZpbmQoImxpIikuaGlkZSgpLGwuZmluZCgibGkiKS5lcShiKS5zaG93KCl9fSx4PWZ1bmN0aW9uKCl7aWYoZz0hMSxuLnNldHRpbmdzLnBsYXkpc3dpdGNoKG4uc2V0dGluZ3MuZWZmZWN0KXtjYXNlInNjcm9sbCI6InJ0bCI9PT1uLnNldHRpbmdzLmRpcmVjdGlvbj9sLndpZHRoKCk+YS53aWR0aCgpJiZ2KCk6bC53aWR0aCgpPmEud2lkdGgoKSYmaygpO2JyZWFrO2RlZmF1bHQ6bi5wYXVzZSgpLHk9c2V0SW50ZXJ2YWwoZnVuY3Rpb24oKXtuLm5leHQoKX0sbi5zZXR0aW5ncy5kZWxheVRpbWVyKX19O24uaW5pdD1mdW5jdGlvbigpe2lmKG4uc2V0dGluZ3M9dC5leHRlbmQoe30scyxpKSwiZml4ZWQtdG9wIj09PW4uc2V0dGluZ3MucG9zaXRpb24/ci5hZGRDbGFzcygiYm4tZml4ZWQtdG9wIikuY3NzKHsiei1pbmRleCI6bi5zZXR0aW5ncy56SW5kZXh9KToiZml4ZWQtYm90dG9tIj09PW4uc2V0dGluZ3MucG9zaXRpb24mJnIuYWRkQ2xhc3MoImJuLWZpeGVkLWJvdHRvbSIpLmNzcyh7InotaW5kZXgiOm4uc2V0dGluZ3MuekluZGV4fSksImRlZmF1bHQiIT1uLnNldHRpbmdzLmZvbnRTaXplJiZyLmNzcyh7ImZvbnQtc2l6ZSI6bi5zZXR0aW5ncy5mb250U2l6ZX0pLCJkZWZhdWx0IiE9bi5zZXR0aW5ncy50aGVtZUNvbG9yJiYoci5jc3MoeyJib3JkZXItY29sb3IiOm4uc2V0dGluZ3MudGhlbWVDb2xvcixjb2xvcjpuLnNldHRpbmdzLnRoZW1lQ29sb3J9KSxvLmNzcyh7YmFja2dyb3VuZDpuLnNldHRpbmdzLnRoZW1lQ29sb3J9KSksImRlZmF1bHQiIT1uLnNldHRpbmdzLmJhY2tncm91bmQmJnIuY3NzKHtiYWNrZ3JvdW5kOm4uc2V0dGluZ3MuYmFja2dyb3VuZH0pLHIuY3NzKHtoZWlnaHQ6bi5zZXR0aW5ncy5oZWlnaHQsImxpbmUtaGVpZ2h0IjpuLnNldHRpbmdzLmhlaWdodC0yKm4uc2V0dGluZ3MuYm9yZGVyV2lkdGgrInB4IiwiYm9yZGVyLXJhZGl1cyI6bi5zZXR0aW5ncy5yYWRpdXMsImJvcmRlci13aWR0aCI6bi5zZXR0aW5ncy5ib3JkZXJXaWR0aH0pLGMuZmluZCgiLmJuLXNlcGVyYXRvciIpLmNzcyh7aGVpZ2h0Om4uc2V0dGluZ3MuaGVpZ2h0LTIqbi5zZXR0aW5ncy5ib3JkZXJXaWR0aH0pLHIuYWRkQ2xhc3MoImJuLWVmZmVjdC0iK24uc2V0dGluZ3MuZWZmZWN0KyIgYm4tZGlyZWN0aW9uLSIrbi5zZXR0aW5ncy5kaXJlY3Rpb24pLHcoKSwib2JqZWN0Ij09dHlwZW9mIG4uc2V0dGluZ3Muc291cmNlKXN3aXRjaChuLnNldHRpbmdzLnNvdXJjZS50eXBlKXtjYXNlInJzcyI6InJzczJqc29uIj09PW4uc2V0dGluZ3Muc291cmNlLnVzaW5nQXBpPygoZD1uZXcgWE1MSHR0cFJlcXVlc3QpLm9ucmVhZHlzdGF0ZWNoYW5nZT1mdW5jdGlvbigpe2lmKDQ9PWQucmVhZHlTdGF0ZSYmMjAwPT1kLnN0YXR1cyl7dmFyIHQ9SlNPTi5wYXJzZShkLnJlc3BvbnNlVGV4dCksZT0iIixpPSIiO3N3aXRjaChuLnNldHRpbmdzLnNvdXJjZS5zaG93aW5nRmllbGQpe2Nhc2UidGl0bGUiOmk9InRpdGxlIjticmVhaztjYXNlImRlc2NyaXB0aW9uIjppPSJkZXNjcmlwdGlvbiI7YnJlYWs7Y2FzZSJsaW5rIjppPSJsaW5rIjticmVhaztkZWZhdWx0Omk9InRpdGxlIn12YXIgcz0iIjt2b2lkIDAhPT1uLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJnZvaWQgMCE9PXR5cGVvZiBuLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJihzPW4uc2V0dGluZ3Muc291cmNlLnNlcGVyYXRvcik7Zm9yKHZhciByPTA7cjx0Lml0ZW1zLmxlbmd0aDtyKyspbi5zZXR0aW5ncy5zb3VyY2UubGlua0VuYWJsZWQ/ZSs9JzxsaT48YSB0YXJnZXQ9Iicrbi5zZXR0aW5ncy5zb3VyY2UudGFyZ2V0KyciIGhyZWY9IicrdC5pdGVtc1tyXS5saW5rKyciPicrcyt0Lml0ZW1zW3JdW2ldKyI8L2E+PC9saT4iOmUrPSI8bGk+PGE+IitzK3QuaXRlbXNbcl1baV0rIjwvYT48L2xpPiI7bC5lbXB0eSgpLmFwcGVuZChlKSxjPWwuY2hpbGRyZW4oImxpIiksbT1sLmNoaWxkcmVuKCJsaSIpLmxlbmd0aCx3KCksInNjcm9sbCIhPW4uc2V0dGluZ3MuZWZmZWN0JiZxKCksYy5maW5kKCIuYm4tc2VwZXJhdG9yIikuY3NzKHtoZWlnaHQ6bi5zZXR0aW5ncy5oZWlnaHQtMipuLnNldHRpbmdzLmJvcmRlcldpZHRofSkseCgpfX0sZC5vcGVuKCJHRVQiLCJodHRwczovL2FwaS5yc3MyanNvbi5jb20vdjEvYXBpLmpzb24/cnNzX3VybD0iK24uc2V0dGluZ3Muc291cmNlLnVybCsiJmNvdW50PSIrbi5zZXR0aW5ncy5zb3VyY2UubGltaXQrIiZhcGlfa2V5PSIrbi5zZXR0aW5ncy5zb3VyY2UucnNzMmpzb25BcGlLZXksITApLGQuc2VuZCgpKTooKGU9bmV3IFhNTEh0dHBSZXF1ZXN0KS5vcGVuKCJHRVQiLCJodHRwczovL3F1ZXJ5LnlhaG9vYXBpcy5jb20vdjEvcHVibGljL3lxbD9xPSIrZW5jb2RlVVJJQ29tcG9uZW50KCdzZWxlY3QgKiBmcm9tIHJzcyB3aGVyZSB1cmw9Iicrbi5zZXR0aW5ncy5zb3VyY2UudXJsKyciIGxpbWl0ICcrbi5zZXR0aW5ncy5zb3VyY2UubGltaXQpKyImZm9ybWF0PWpzb24iLCEwKSxlLm9ucmVhZHlzdGF0ZWNoYW5nZT1mdW5jdGlvbigpe2lmKDQ9PWUucmVhZHlTdGF0ZSlpZigyMDA9PWUuc3RhdHVzKXt2YXIgdD1KU09OLnBhcnNlKGUucmVzcG9uc2VUZXh0KSxpPSIiLHM9IiI7c3dpdGNoKG4uc2V0dGluZ3Muc291cmNlLnNob3dpbmdGaWVsZCl7Y2FzZSJ0aXRsZSI6cz0idGl0bGUiO2JyZWFrO2Nhc2UiZGVzY3JpcHRpb24iOnM9ImRlc2NyaXB0aW9uIjticmVhaztjYXNlImxpbmsiOnM9ImxpbmsiO2JyZWFrO2RlZmF1bHQ6cz0idGl0bGUifXZhciByPSIiOyJ1bmRlZmluZWQiIT1uLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJnZvaWQgMCE9PW4uc2V0dGluZ3Muc291cmNlLnNlcGVyYXRvciYmKHI9bi5zZXR0aW5ncy5zb3VyY2Uuc2VwZXJhdG9yKTtmb3IodmFyIG89MDtvPHQucXVlcnkucmVzdWx0cy5pdGVtLmxlbmd0aDtvKyspbi5zZXR0aW5ncy5zb3VyY2UubGlua0VuYWJsZWQ/aSs9JzxsaT48YSB0YXJnZXQ9Iicrbi5zZXR0aW5ncy5zb3VyY2UudGFyZ2V0KyciIGhyZWY9IicrdC5xdWVyeS5yZXN1bHRzLml0ZW1bb10ubGluaysnIj4nK3IrdC5xdWVyeS5yZXN1bHRzLml0ZW1bb11bc10rIjwvYT48L2xpPiI6aSs9IjxsaT48YT4iK3IrdC5xdWVyeS5yZXN1bHRzLml0ZW1bb11bc10rIjwvYT48L2xpPiI7bC5lbXB0eSgpLmFwcGVuZChpKSxjPWwuY2hpbGRyZW4oImxpIiksbT1sLmNoaWxkcmVuKCJsaSIpLmxlbmd0aCx3KCksInNjcm9sbCIhPW4uc2V0dGluZ3MuZWZmZWN0JiZxKCksYy5maW5kKCIuYm4tc2VwZXJhdG9yIikuY3NzKHtoZWlnaHQ6bi5zZXR0aW5ncy5oZWlnaHQtMipuLnNldHRpbmdzLmJvcmRlcldpZHRofSkseCgpfWVsc2UgbC5lbXB0eSgpLmFwcGVuZCgnPGxpPjxzcGFuIGNsYXNzPSJibi1sb2FkZXItdGV4dCI+JytuLnNldHRpbmdzLnNvdXJjZS5lcnJvck1zZysiPC9zcGFuPjwvbGk+Iil9LGUuc2VuZChudWxsKSk7YnJlYWs7Y2FzZSJqc29uIjp0LmdldEpTT04obi5zZXR0aW5ncy5zb3VyY2UudXJsLGZ1bmN0aW9uKHQpe3ZhciBlLGk9IiI7ZT0idW5kZWZpbmVkIj09PW4uc2V0dGluZ3Muc291cmNlLnNob3dpbmdGaWVsZD8idGl0bGUiOm4uc2V0dGluZ3Muc291cmNlLnNob3dpbmdGaWVsZDt2YXIgcz0iIjt2b2lkIDAhPT1uLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJnZvaWQgMCE9PXR5cGVvZiBuLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJihzPW4uc2V0dGluZ3Muc291cmNlLnNlcGVyYXRvcik7Zm9yKHZhciByPTA7cjx0Lmxlbmd0aCYmIShyPj1uLnNldHRpbmdzLnNvdXJjZS5saW1pdCk7cisrKW4uc2V0dGluZ3Muc291cmNlLmxpbmtFbmFibGVkP2krPSc8bGk+PGEgdGFyZ2V0PSInK24uc2V0dGluZ3Muc291cmNlLnRhcmdldCsnIiBocmVmPSInK3Rbcl0ubGluaysnIj4nK3MrdFtyXVtlXSsiPC9hPjwvbGk+IjppKz0iPGxpPjxhPiIrcyt0W3JdW2VdKyI8L2E+PC9saT4iLCJ1bmRlZmluZWQiPT09dFtyXVtlXSYmY29uc29sZS5sb2coJyInK2UrJyIgZG9lcyBub3QgZXhpc3QgaW4gdGhpcyBqc29uLicpO2wuZW1wdHkoKS5hcHBlbmQoaSksYz1sLmNoaWxkcmVuKCJsaSIpLG09bC5jaGlsZHJlbigibGkiKS5sZW5ndGgsdygpLCJzY3JvbGwiIT1uLnNldHRpbmdzLmVmZmVjdCYmcSgpLGMuZmluZCgiLmJuLXNlcGVyYXRvciIpLmNzcyh7aGVpZ2h0Om4uc2V0dGluZ3MuaGVpZ2h0LTIqbi5zZXR0aW5ncy5ib3JkZXJXaWR0aH0pLHgoKX0pO2JyZWFrO2RlZmF1bHQ6Y29uc29sZS5sb2coJ1BsZWFzZSBjaGVjayB5b3VyICJzb3VyY2UiIG9iamVjdCBwYXJhbWV0ZXIuIEluY29ycmVjdCBWYWx1ZScpfWVsc2UiaHRtbCI9PT1uLnNldHRpbmdzLnNvdXJjZT8oInNjcm9sbCIhPW4uc2V0dGluZ3MuZWZmZWN0JiZxKCkseCgpKTpjb25zb2xlLmxvZygnUGxlYXNlIGNoZWNrIHlvdXIgInNvdXJjZSIgcGFyYW1ldGVyLiBJbmNvcnJlY3QgVmFsdWUnKTt2YXIgZSxkO24uc2V0dGluZ3MucGxheT9oLmZpbmQoInNwYW4iKS5yZW1vdmVDbGFzcygiYm4tcGxheSIpLmFkZENsYXNzKCJibi1wYXVzZSIpOmguZmluZCgic3BhbiIpLnJlbW92ZUNsYXNzKCJibi1wYXVzZSIpLmFkZENsYXNzKCJibi1wbGF5Iiksci5vbigibW91c2VsZWF2ZSIsZnVuY3Rpb24oZSl7dmFyIGk9dChkb2N1bWVudC5lbGVtZW50RnJvbVBvaW50KGUuY2xpZW50WCxlLmNsaWVudFkpKS5wYXJlbnRzKCIuYnJlYWtpbmctbmV3cy10aWNrZXIiKVswXTt0KHRoaXMpWzBdIT09aSYmKCEwPT09bi5zZXR0aW5ncy5zdG9wT25Ib3Zlcj8hMD09PW4uc2V0dGluZ3MucGxheSYmbi5wbGF5KCk6ITA9PT1uLnNldHRpbmdzLnBsYXkmJiEwPT09ZyYmbi5wbGF5KCkpfSksci5vbigibW91c2VlbnRlciIsZnVuY3Rpb24oKXshMD09PW4uc2V0dGluZ3Muc3RvcE9uSG92ZXImJm4ucGF1c2UoKX0pLHUub24oImNsaWNrIixmdW5jdGlvbigpe3AmJihwPSExLG4ucGF1c2UoKSxuLm5leHQoKSl9KSxmLm9uKCJjbGljayIsZnVuY3Rpb24oKXtwJiYocD0hMSxuLnBhdXNlKCksbi5wcmV2KCkpfSksaC5vbigiY2xpY2siLGZ1bmN0aW9uKCl7cCYmKGguZmluZCgic3BhbiIpLmhhc0NsYXNzKCJibi1wYXVzZSIpPyhoLmZpbmQoInNwYW4iKS5yZW1vdmVDbGFzcygiYm4tcGF1c2UiKS5hZGRDbGFzcygiYm4tcGxheSIpLG4uc3RvcCgpKToobi5zZXR0aW5ncy5wbGF5PSEwLGguZmluZCgic3BhbiIpLnJlbW92ZUNsYXNzKCJibi1wbGF5IikuYWRkQ2xhc3MoImJuLXBhdXNlIikpKX0pLHQod2luZG93KS5vbigicmVzaXplIixmdW5jdGlvbigpe3Iud2lkdGgoKTw0ODA/KG8uaGlkZSgpLCJydGwiPT1uLnNldHRpbmdzLmRpcmVjdGlvbj9hLmNzcyh7cmlnaHQ6MH0pOmEuY3NzKHtsZWZ0OjB9KSk6KG8uc2hvdygpLCJydGwiPT1uLnNldHRpbmdzLmRpcmVjdGlvbj9hLmNzcyh7cmlnaHQ6by5vdXRlcldpZHRoKCl9KTphLmNzcyh7bGVmdDpvLm91dGVyV2lkdGgoKX0pKX0pfSxuLnBhdXNlPWZ1bmN0aW9uKCl7Zz0hMCxjbGVhckludGVydmFsKHkpfSxuLnN0b3A9ZnVuY3Rpb24oKXtnPSEwLG4uc2V0dGluZ3MucGxheT0hMX0sbi5wbGF5PWZ1bmN0aW9uKCl7eCgpfSxuLm5leHQ9ZnVuY3Rpb24oKXshZnVuY3Rpb24oKXtzd2l0Y2gobi5zZXR0aW5ncy5lZmZlY3Qpe2Nhc2Uic2Nyb2xsIjoicnRsIj09PW4uc2V0dGluZ3MuZGlyZWN0aW9uP2wuc3RvcCgpLmFuaW1hdGUoe21hcmdpblJpZ2h0Oi1sLmZpbmQoImxpOmZpcnN0LWNoaWxkIikub3V0ZXJXaWR0aCgpfSwzMDAsZnVuY3Rpb24oKXtsLmZpbmQoImxpOmZpcnN0LWNoaWxkIikuaW5zZXJ0QWZ0ZXIobC5maW5kKCJsaTpsYXN0LWNoaWxkIikpLGwuY3NzKHttYXJnaW5SaWdodDowfSkscD0hMH0pOmwuc3RvcCgpLmFuaW1hdGUoe21hcmdpbkxlZnQ6LWwuZmluZCgibGk6Zmlyc3QtY2hpbGQiKS5vdXRlcldpZHRoKCl9LDMwMCxmdW5jdGlvbigpe2wuZmluZCgibGk6Zmlyc3QtY2hpbGQiKS5pbnNlcnRBZnRlcihsLmZpbmQoImxpOmxhc3QtY2hpbGQiKSksbC5jc3Moe21hcmdpbkxlZnQ6MH0pLHA9ITB9KTticmVhaztkZWZhdWx0Om08PSsrYiYmKGI9MCkscSgpfX0oKX0sbi5wcmV2PWZ1bmN0aW9uKCl7IWZ1bmN0aW9uKCl7c3dpdGNoKG4uc2V0dGluZ3MuZWZmZWN0KXtjYXNlInNjcm9sbCI6InJ0bCI9PT1uLnNldHRpbmdzLmRpcmVjdGlvbj8oMDw9cGFyc2VJbnQobC5jc3MoIm1hcmdpblJpZ2h0IiksMTApJiYobC5jc3MoeyJtYXJnaW4tcmlnaHQiOi1sLmZpbmQoImxpOmxhc3QtY2hpbGQiKS5vdXRlcldpZHRoKCl9KSxsLmZpbmQoImxpOmxhc3QtY2hpbGQiKS5pbnNlcnRCZWZvcmUobC5maW5kKCJsaTpmaXJzdC1jaGlsZCIpKSksbC5zdG9wKCkuYW5pbWF0ZSh7bWFyZ2luUmlnaHQ6MH0sMzAwLGZ1bmN0aW9uKCl7cD0hMH0pKTooMDw9cGFyc2VJbnQobC5jc3MoIm1hcmdpbkxlZnQiKSwxMCkmJihsLmNzcyh7Im1hcmdpbi1sZWZ0IjotbC5maW5kKCJsaTpsYXN0LWNoaWxkIikub3V0ZXJXaWR0aCgpfSksbC5maW5kKCJsaTpsYXN0LWNoaWxkIikuaW5zZXJ0QmVmb3JlKGwuZmluZCgibGk6Zmlyc3QtY2hpbGQiKSkpLGwuc3RvcCgpLmFuaW1hdGUo' type='text/javascript'> </script>  
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="jquerysctipttop.css" rel="stylesheet" type="text/css">
+	<title>Breaking News Ticker Examples</title>
+
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+
+	<!--Adding demo page css file -->
+	<link rel="stylesheet" type="text/css" href="./demo-page-styles.css">
+
+	<!--Adding plugin css file -->
+	<link rel="stylesheet" type="text/css" href="./breaking-news-ticker.css">
+</head>
+
+<body>
+<div id="jquery-script-menu">
+<div class="jquery-script-center">
+<ul>
+<li><a href="https://www.jqueryscript.net/animation/breaking-news-ticker.html">Download This Plugin</a></li>
+<li><a href="https://www.jqueryscript.net/">Back To jQueryScript.Net</a></li>
+</ul>
+ 
+<div class="jquery-script-clear"></div>
+</div>
+</div>
+<h1 style="margin:150px auto 30px auto; text-align:center">Breaking News Ticker Examples</h1>
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 1 : Default Settings (Scroll Effect)</h2>
+			<div class="demo-box">
+
+				<!-- DEMO1 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker1">
+  <div class="bn-label">Ticker Label</div>
+  <div class="bn-news">
+    <ul>
+      <li><a href="#">1.1. Breaking NEWS 1</a></li>
+      <li><a href="#">1.2. Breaking NEWS 2</a></li>
+      <li><a href="#">1.3. Breaking NEWS 3</a></li>
+      <li><a href="#">1.4. Breaking NEWS 4</a></li>
+      <li><a href="#">1.5. Breaking NEWS 5</a></li>
+      <li><a href="#">1.6. Breaking NEWS 6</a></li>
+      <li><a href="#">1.7. Breaking NEWS 7</a></li>
+    </ul>
+  </div>
+  <div class="bn-controls">
+    <button><span class="bn-arrow bn-prev"></span></button>
+    <button><span class="bn-action"></span></button>
+    <button><span class="bn-arrow bn-next"></span></button>
+  </div>
+</div>
+			    <!-- *********************** -->
+			    <!-- DEMO1 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 2 : RTL With Scroll Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO2 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker2">
+			    	<div class="bn-label">أخبار</div>
+			    	<div class="bn-news">
+			    		<ul>
+						    			<li><span class="bn-prefix">Braveheart, 1995 :</span>"They may take our lives, but they'll never take our freedom!"</li>
+			    			<li><span class="bn-prefix">Star Wars Episode VII: The Force Awakens, 2015 :</span>"Chewie, we're home."</li>
+			    			<li><span class="bn-prefix">Pulp Fiction, 1994 :</span>"They call it a Royale with cheese."</li>
+			    			<li><span class="bn-prefix">Jerry Maguire, 1996 :</span>"You complete me."</li>
+			    			<li><span class="bn-prefix">The Godfather: Part III, 1990 :</span>"Just when I thought I was out, they pull me back in."</li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO2 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 3 : Slide-Left Effect, with prefix label. (for testimonials :) no play/pause)</h2>
+			<div class="demo-box">
+
+				<!-- DEMO3 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker3">
+			    	<div class="bn-label">TESTIMONIALS</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><span class="bn-prefix">Braveheart, 1995 :</span>"They may take our lives, but they'll never take our freedom!"</li>
+			    			<li><span class="bn-prefix">Star Wars Episode VII: The Force Awakens, 2015 :</span>"Chewie, we're home."</li>
+			    			<li><span class="bn-prefix">Pulp Fiction, 1994 :</span>"They call it a Royale with cheese."</li>
+			    			<li><span class="bn-prefix">Jerry Maguire, 1996 :</span>"You complete me."</li>
+			    			<li><span class="bn-prefix">The Godfather: Part III, 1990 :</span>"Just when I thought I was out, they pull me back in."</li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO3 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 4 : RSS Data ( with rss2json api), No Label, Scroll Effect, Seperator Icon</h2>
+			<div class="demo-box">
+
+				<!-- DEMO4 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker4">
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><span class="bn-loader-text">Data loading...</span></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO4 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 5 : Typography Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO5 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker5">
+			    	<div class="bn-label">Typography</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO5 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 6 : Scroll Effect, JSON Data, Icon Seperator</h2>
+			<div class="demo-box">
+
+				<!-- DEMO6 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker6">
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><span class="bn-loader-text">Loading post from JSON file...</span></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO6 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 7 : RSS Data (with YQL api), No controls, No label, Transparent Background</h2>
+			<div class="demo-box">
+
+				<!-- DEMO7 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker7">
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><span class="bn-loader-text">Loading post from JSON file...</span></li>
+			    		</ul>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO7 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 9 : Fade Effect, Different Theme color</h2>
+			<div class="demo-box">
+
+				<!-- DEMO9 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker9">
+			    	<div class="bn-label">FADE EFFECT</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO9 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 10 : Slide-Down Effect, Different height and font size</h2>
+			<div class="demo-box">
+
+				<!-- DEMO10 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker10">
+			    	<div class="bn-label">SLIDE DOWN</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO10 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 11 : Slide-Up Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO11 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker11">
+			    	<div class="bn-label">SLIDE UP</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO11 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 12 : RTL, Typography Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO12 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker12">
+			    	<div class="bn-label">أخبار</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><a href="#">هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.</a></li>
+			    			<li><a href="#">العديد من برامح النشر المكتبي وبرامح تحرير صفحات الويب</a></li>
+			    			<li><a href="#">هنالك العديد من الأنواع المتوفرة لنصوص لوريم إيبسوم، ولكن الغالبية تم تعديلها بشكل ما عبر إدخال بعض النوادر</a></li>
+			    			<li><a href="#">لافاَ للإعتقاد السائد فإن لوريم إيبسوم ليس نصاَ عشوائياً، بل إن له جذور في الأدب اللاتيني </a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO12 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 13 : Slide-Right Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO13 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker13">
+			    	<div class="bn-label">SLIDE RIGHT</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO13 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 14 : Extra</h2>
+			<div class="demo-box">
+
+				<!-- DEMO14 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker14">
+			    	<div class="bn-label">WWWWW</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><span class="bn-seperator bn-news-dot"></span>FACEBOOK <span class="bn-positive">%3.4</span></li>
+			    			<li><span class="bn-seperator bn-news-dot"></span>TWITTER <span class="bn-negative">%0.775</span></li>
+			    			<li><span class="bn-seperator bn-news-dot"></span>INSTAGRAM <span class="bn-negative">%4.71245</span></li>
+			    			<li><span class="bn-seperator bn-news-dot"></span>ENVATO <span class="bn-positive">%1.44</span></li>
+			    			<li><span class="bn-seperator bn-news-dot"></span>SNAPCHAT <span class="bn-negative">%2.4447</span></li>
+			    			<li><span class="bn-seperator bn-news-dot"></span>THEMEFOREST <span class="bn-negative">%0.254</span></li>
+			    			<li><span class="bn-seperator bn-news-dot"></span>CODECANYON <span class="bn-positive">%7.1</span></li>
+			    		</ul>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO14 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box">
+		<div class="section-container">
+			<h2>Example 15 : Scroll Effect and "fixed-bottom" position</h2>
+			<div class="demo-box">
+				<p>Showing on bottom fixed.</p>
+				<!-- DEMO15 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker" id="newsTicker15">
+			    	<div class="bn-label">NEWS</div>
+			    	<div class="bn-news">
+			    		<ul>
+			    			<li><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO15 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+
+
+
+
+
+	<!-- Adding jquery library. minimum version 1.10.0 -->
+	
+ 
+
+
+	<script type="text/javascript">
+
+		jQuery(document).ready(function($){
+
+			$('#newsTicker1').breakingNews();
+			//$('#newsTicker2').data('breakingNews').next();
+
+			$('#newsTicker2').breakingNews({
+				direction: 'rtl'
+			});
+
+			$('#newsTicker3').breakingNews({
+				themeColor: '#f9a828',
+				effect: 'slide-left'
+			});
+
+			$('#newsTicker4').breakingNews({
+				themeColor: '#11cbd7',
+				source: {
+					type:'rss',
+					usingApi:'rss2json',
+					rss2jsonApiKey: '5ivfzdrkuqwmoe0dgxeqvhfz0knlo7yq4fw20bt0',
+					url:'http://rss.cnn.com/rss/edition.rss',
+					limit:7,
+					showingField:'title',
+					linkEnabled: true,
+					target:'_blank',
+					seperator: '<span class="bn-seperator" style="background-image:url(img/cnn-logo.png);"></span>',
+					errorMsg: 'RSS Feed not loaded. Please try again.'
+				}
+			});
+
+			$('#newsTicker5').breakingNews({
+				effect: 'typography'
+			});
+
+
+			$('#newsTicker6').breakingNews({
+				source: {
+					type:'json',
+					url:'https://jsonplaceholder.typicode.com/posts',
+					limit:20,
+					showingField:'title',
+					linkEnabled: false,
+					target:'_blank',
+					seperator: '<span class="bn-seperator" style="background-image:url(img/cnn-logo.png);"></span>',
+					errorMsg: 'Json file not loaded. Please check the settings.'
+				}
+			});
+
+			$('#newsTicker7').breakingNews({
+				themeColor: '#11cbd7',
+				background: 'transparent',
+				borderWidth: 0,
+				source: {
+					type:'rss',
+					usingApi:'YQL',
+					url:'http://feeds.bbci.co.uk/news/rss.xml',
+					limit:20,
+					showingField:'title',
+					linkEnabled: true,
+					target:'_blank',
+					seperator: '<span class="bn-seperator bn-news-dot"></span>',
+					errorMsg: 'Json file not loaded. Please check the settings.'
+				}
+			});
+
+
+			$('#newsTicker8').breakingNews({
+				height:56,
+				borderWidth:0,
+				background: 'url(img/background-pattern-example.png)'
+			});
+
+			$('#newsTicker9').breakingNews({
+				effect: 'fade',
+				themeColor: '#ef7b7b'
+			});
+
+			$('#newsTicker10').breakingNews({
+				effect: 'slide-down',
+				themeColor: '#2eb872',
+				height: 50,
+				fontSize: '18px'
+			});
+
+			$('#newsTicker11').breakingNews({
+				effect: 'slide-up'
+			});
+
+
+			$('#newsTicker12').breakingNews({
+				effect: 'typography',
+				direction: 'rtl',
+				themeColor: '#08c299'
+			});
+
+			$('#newsTicker13').breakingNews({
+				effect: 'slide-right'
+			});
+
+			$('#newsTicker14').breakingNews();
+
+			$('#newsTicker15').breakingNews({
+				position : 'fixed-bottom',
+				borderWidth: 3,
+				height: 50,
+				themeColor: '#ce2525'
+			});
+
+
+
+		});
+
+	</script>
+
+</body>
+
+</html>
