@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<style>
+	.breaking-news-ticker{
+  display: block;
+  width: 100%;
+  border: solid 1px #ce2525;
+  background: #FFF;
+  height: 40px;
+  box-sizing: border-box;
+  position: relative;
+  line-height: 40px;
+  overflow: hidden;
+  border-radius: 2px;
+  text-align: auto;
+  font-size: 14px;
+}
+.breaking-news-ticker *{
+  box-sizing: border-box;
+}
+.breaking-news-ticker.bn-fixed-top{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.breaking-news-ticker.bn-fixed-bottom{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+
+
+
+/*********************************/
+/*title styles start**************/
+.bn-label{
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  position: absolute;
+  background-color: #ce2525;
+  text-align: center;
+  color: #FFF;
+  font-weight: bold;
+  z-index: 3;
+  padding: 0 15px;
+  white-space: nowrap;
+}
+/*title styles end****************/
+
+
+
+/*********************************/
+/*news item style start **********/
+.bn-news{
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  right: 0;
+  overflow: hidden;
+}
+.bn-news ul{
+  display: block;
+  height: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+}
+.bn-news ul li{
+  white-space: nowrap;
+  overflow:hidden !important;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  -webkit-transition: color .2s linear;
+  -moz-transition: color .2s linear;
+  -o-transition: color .2s linear;
+  transition: color .2s linear;
+  position: absolute;
+  width: 100%;
+  display: none;
+  color: #333;
+}
+.bn-news ul li a{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  padding: 0 10px;
+  color: #333;
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.bn-news ul li a:hover{
+  color: #069;
+}
+.bn-loader-text{
+  padding: 0 10px;
+}
+.bn-seperator{
+  display: inline-block;
+  float: left;
+  margin-right: 15px;
+  width: 30px;
+  height: 40px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.bn-seperator.bn-news-dot{
+  margin-right: 0;
+}
+.bn-seperator.bn-news-dot:after{
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #333;
+  border-radius: 50%;
+  top: 50%;
+  margin-top: -4px;
+  left: 50%;
+  margin-left: -4px;
+}
+.bn-prefix{
+  color: #d65d7a;
+  margin-right: 15px;
+  padding-left: 10px;
+}
+.bn-positive{
+  color: #0b8457;
+  font-weight: bold;
+}
+.bn-negative{
+  color: #dc2f2f;
+  font-weight: bold;
+}
+/*news item style end ************/
+
+
+
+/*********************************/
+/*controls style start ***********/
+.bn-controls{
+  width: auto;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  position: absolute;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.bn-controls button{
+  width: 30px;
+  float: left;
+  height: 100%;
+  cursor: pointer;
+  border:none;
+  border-left: solid 1px #EEE;
+  text-align: center;
+  background-color: #f6f6f6;
+  outline: none;
+}
+.bn-controls button:hover{
+  background-color: #EEE;
+}
+
+.bn-arrow {
+  margin: 0;
+  display: inline-block;
+  height: 8px;
+  position: relative;
+  width: 8px;
+  top: -2px;
+}
+.bn-arrow::after {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-right-style: solid;
+  border-right-width: 2px;
+  content: '';
+  display: inline-block;
+  height: 8px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 8px;
+}
+.bn-arrow.bn-next {
+  -moz-transform: rotate(315deg);
+  -ms-transform: rotate(315deg);
+  -webkit-transform: rotate(315deg);
+  transform: rotate(315deg);
+  left:-3px;
+}
+.bn-arrow.bn-prev {
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+  left: 3px;
+}
+.bn-arrow::after{
+  border-color: #999999;
+}
+.bn-arrow::before{
+  background-color: #999999;
+}
+.bn-play{
+  position: relative;
+  background: #999999;
+  width: 0;
+  height: 12px;
+  display: inline-block;
+  margin-left: -5px;
+}
+.bn-play::after {
+  left: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(136, 183, 213, 0);
+  border-left-color: #999999;
+  border-width: 8px;
+  margin-top: -8px;
+}
+.bn-pause{
+  position: relative;
+  width: 0;
+  height: 14px;
+  display: inline-block;
+  top: 1px;
+  left:-1px;
+}
+.bn-pause::before{
+  position: absolute;
+  content: "";
+  width: 2px;
+  height: 100%;
+  left: 3px;
+  background-color: #999999;
+}
+.bn-pause::after{
+  position: absolute;
+  content: "";
+  width: 2px;
+  height: 100%;
+  left: -3px;
+  background-color: #999999;
+}
+/*controls style end *************/
+/*********************************/
+.bn-direction-rtl{
+  direction: rtl;
+}
+.bn-direction-rtl .bn-label{
+  left: auto;
+  right: 0;
+}
+.bn-direction-rtl .bn-controls{
+  right: auto;
+  left: 0;
+}
+.bn-direction-rtl .bn-seperator{
+  margin-left: 15px;
+  margin-right: 0;
+  float: right;
+}
+.bn-direction-rtl .bn-prefix{
+  margin-left: 15px;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 10px;
+}
+.bn-direction-rtl .bn-controls button{
+  border-left: none;
+  border-right: solid 1px #EEE;
+}
+
+.bn-effect-scroll .bn-news ul{
+  display: block;
+  width: 100%;
+  position: relative;
+}
+.bn-effect-scroll .bn-news ul li{
+  display: list-item;
+  float: left;
+  position: relative;
+  width: auto;
+}
+.bn-effect-scroll.bn-direction-rtl .bn-news ul li{
+  float: right;
+}
+
+/*********************************/
+/*********************************/
+
+	</style></style></sylt>
+	<style> 
+	/* cyrillic-ext */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v18/ieVl2ZhZI2eCN5jzbjEETS9weq8-19-7DRs5.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v18/ieVl2ZhZI2eCN5jzbjEETS9weq8-19a7DRs5.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v18/ieVl2ZhZI2eCN5jzbjEETS9weq8-1967DRs5.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v18/ieVl2ZhZI2eCN5jzbjEETS9weq8-19G7DRs5.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v18/ieVl2ZhZI2eCN5jzbjEETS9weq8-1927DRs5.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v18/ieVl2ZhZI2eCN5jzbjEETS9weq8-19y7DRs5.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v18/ieVl2ZhZI2eCN5jzbjEETS9weq8-19K7DQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+	 
+	 
+
+	<!--Adding demo page css file -->
+	<link rel="stylesheet" type="text/css" href="Breaking%20News%20Ticker%20Examples_files/demo-page-styles.css">
+
+	<!--Adding plugin css file -->
+	<link rel="stylesheet" type="text/css" href="Breaking%20News%20Ticker%20Examples_files/breaking-news-ticker.css">
+</head>
+
+<body>
+<div id="jquery-script-menu">
+<div class="jquery-script-center">
+ 
+ 
+<div class="jquery-script-clear"></div>
+</div>
+</div>
+ 
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 1 : Default Settings (Scroll Effect)</h2>
+			<div class="demo-box">
+
+				<!-- DEMO1 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-scroll bn-direction-ltr" id="newsTicker1" style="height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+  <div class="bn-label">Ticker Label</div>
+  <div class="bn-news" style="left: 114.75px; right: 90px;">
+    <ul style="width: 1130px; margin-left: -7px;">
+      
+      
+      
+      
+      
+      
+      <li><a href="#">1.2. Breaking NEWS 2</a></li><li><a href="#">1.3. Breaking NEWS 3</a></li><li><a href="#">1.4. Breaking NEWS 4</a></li><li><a href="#">1.5. Breaking NEWS 5</a></li><li><a href="#">1.6. Breaking NEWS 6</a></li><li><a href="#">1.7. Breaking NEWS 7</a></li><li><a href="#">1.1. Breaking NEWS 1</a></li>
+    </ul>
+  </div>
+  <div class="bn-controls">
+    <button><span class="bn-arrow bn-prev"></span></button>
+    <button><span class="bn-action bn-pause"></span></button>
+    <button><span class="bn-arrow bn-next"></span></button>
+  </div>
+</div>
+			    <!-- *********************** -->
+			    <!-- DEMO1 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 2 : RTL With Scroll Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO2 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-scroll bn-direction-rtl" id="newsTicker2" style="height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label">أخبار</div>
+			    	<div class="bn-news" style="right: 53px; left: 90px;">
+			    		<ul style="width: 2208.95px; margin-right: -200px;">
+						    			
+			    			
+			    			
+			    			
+			    			<li><span class="bn-prefix">Braveheart, 1995 :</span>"They may take our lives, but they'll never take our freedom!"</li><li><span class="bn-prefix">Star Wars Episode VII: The Force Awakens, 2015 :</span>"Chewie, we're home."</li><li><span class="bn-prefix">Pulp Fiction, 1994 :</span>"They call it a Royale with cheese."</li><li><span class="bn-prefix">Jerry Maguire, 1996 :</span>"You complete me."</li><li><span class="bn-prefix">The Godfather: Part III, 1990 :</span>"Just when I thought I was out, they pull me back in."</li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO2 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 3 : Slide-Left Effect, with prefix label. (for testimonials :) no play/pause)</h2>
+			<div class="demo-box">
+
+				<!-- DEMO3 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-slide-left bn-direction-ltr" id="newsTicker3" style="border-color: rgb(249, 168, 40); color: rgb(249, 168, 40); height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label" style="background: rgb(249, 168, 40) none repeat scroll 0% 0%;">TESTIMONIALS</div>
+			    	<div class="bn-news" style="left: 132px; right: 60px;">
+			    		<ul>
+			    			<li style="left: 50%; opacity: 0; display: none;"><span class="bn-prefix">Braveheart, 1995 :</span>"They may take our lives, but they'll never take our freedom!"</li>
+			    			<li style="left: 0px; opacity: 1; display: list-item;"><span class="bn-prefix">Star Wars Episode VII: The Force Awakens, 2015 :</span>"Chewie, we're home."</li>
+			    			<li style="left: 50%; opacity: 0; display: none;"><span class="bn-prefix">Pulp Fiction, 1994 :</span>"They call it a Royale with cheese."</li>
+			    			<li style="left: 50%; opacity: 0; display: none;"><span class="bn-prefix">Jerry Maguire, 1996 :</span>"You complete me."</li>
+			    			<li style="left: 50%; opacity: 0; display: none;"><span class="bn-prefix">The Godfather: Part III, 1990 :</span>"Just when I thought I was out, they pull me back in."</li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO3 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 4 : RSS Data ( with rss2json api), No Label, Scroll Effect, Seperator Icon</h2>
+			<div class="demo-box">
+
+				<!-- DEMO4 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-scroll bn-direction-ltr" id="newsTicker4" style="border-color: rgb(17, 203, 215); color: rgb(17, 203, 215); height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-news" style="right: 90px;">
+			    		<ul style="width: 2767.2px; margin-left: -262px;"><li><a target="_blank" href="https://www.cnn.com/2019/08/17/asia/afghanistan-wedding-bombing-hotel-dubai/index.html"><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>Blast rips through wedding ceremony in Kabul, Afghanistan</a></li><li><a target="_blank" href="https://www.cnn.com/2019/08/16/asia/china-global-times-hu-xijin-hong-kong-intl-hnk/index.html"><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>Taking on Hong Kong from deep inside China's propaganda machine</a></li><li><a target="_blank" href="https://www.cnn.com/collections/russian-nuclear-attack/"><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>What a mysterious explosion tells us about Russia's 'doomsday weapon'</a></li><li><a target="_blank" href="https://www.cnn.com/style/article/alex-rotter-christies-auction/index.html"><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>The man who made a $450M auction bid</a></li><li><a target="_blank" href="https://www.cnn.com/travel/article/chernobyl-slavutych-ukraine/index.html"><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>The Soviet paradise built for Chernobyl's survivors</a></li><li><a target="_blank" href="https://www.cnn.com/2019/08/17/football/liverpool-southampton-adrian-spt-intl/index.html"><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>Liverpool holds on for win against Southampton despite Adrian howler</a></li><li><a target="_blank" href="https://www.cnn.com/2019/08/17/world/vierra-saudi-arabia-custody-intl/index.html"><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>US mother ruled too Western by Saudi court will appeal</a></li></ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO4 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 5 : Typography Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO5 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-typography bn-direction-ltr" id="newsTicker5" style="height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label">Typography</div>
+			    	<div class="bn-news" style="left: 109.967px; right: 90px;">
+			    		<ul>
+			    			<li style="width: 100%; display: none; opacity: 1;"><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li style="width: 100%; display: none; opacity: 1;"><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="width: 100%; display: none; opacity: 1;"><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="width: 100%; display: none; opacity: 1;"><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="width: 100%; display: list-item; opacity: 1;"><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li style="width: 100%; display: none; opacity: 1;"><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="width: 100%; display: none; opacity: 1;"><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO5 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 6 : Scroll Effect, JSON Data, Icon Seperator</h2>
+			<div class="demo-box">
+
+				<!-- DEMO6 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-scroll bn-direction-ltr" id="newsTicker6" style="height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-news" style="right: 90px;">
+			    		<ul style="width: 5425px; margin-left: -183px;"><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>nesciunt iure omnis dolorem tempora et accusantium</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>optio molestias id quia eum</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>et ea vero quia laudantium autem</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>in quibusdam tempore odit est dolorem</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>dolorum ut in voluptas mollitia et saepe quo animi</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>voluptatem eligendi optio</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>eveniet quod temporibus</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>sint suscipit perspiciatis velit dolorum rerum ipsa laboriosam odio</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>fugit voluptas sed molestias voluptatem provident</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>voluptate et itaque vero tempora molestiae</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>adipisci placeat illum aut reiciendis qui</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>doloribus ad provident suscipit at</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>sunt aut facere repellat provident occaecati excepturi optio reprehenderit</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>qui est esse</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>ea molestias quasi exercitationem repellat qui ipsa sit aut</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>eum et est occaecati</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>nesciunt quas odio</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>dolorem eum magni eos aperiam quia</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>magnam facilis autem</a></li><li><a><span class="bn-seperator" style="background-image: url(&quot;img/cnn-logo.png&quot;); height: 38px;"></span>dolorem dolore est ipsam</a></li></ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO6 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 7 : RSS Data (with YQL api), No controls, No label, Transparent Background</h2>
+			<div class="demo-box">
+
+				<!-- DEMO7 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-scroll bn-direction-ltr" id="newsTicker7" style="border-color: rgb(17, 203, 215); color: rgb(17, 203, 215); background: transparent none repeat scroll 0% 0%; height: 40px; line-height: 40px; border-radius: 2px; border-width: 0px;">
+			    	<div class="bn-news">
+			    		<ul style="width: 217px;"><li><span class="bn-loader-text">Json file not loaded. Please check the settings.</span></li></ul>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO7 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 9 : Fade Effect, Different Theme color</h2>
+			<div class="demo-box">
+
+				<!-- DEMO9 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-fade bn-direction-ltr" id="newsTicker9" style="border-color: rgb(239, 123, 123); color: rgb(239, 123, 123); height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label" style="background: rgb(239, 123, 123) none repeat scroll 0% 0%;">FADE EFFECT</div>
+			    	<div class="bn-news" style="left: 124.233px; right: 90px;">
+			    		<ul>
+			    			<li style="display: none;"><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li style="display: none;"><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="display: none;"><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="display: none;"><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="display: list-item;"><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li style="display: none;"><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="display: none;"><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO9 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 10 : Slide-Down Effect, Different height and font size</h2>
+			<div class="demo-box">
+
+				<!-- DEMO10 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-slide-down bn-direction-ltr" id="newsTicker10" style="font-size: 18px; border-color: rgb(46, 184, 114); color: rgb(46, 184, 114); height: 50px; line-height: 48px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label" style="background: rgb(46, 184, 114) none repeat scroll 0% 0%;">SLIDE DOWN</div>
+			    	<div class="bn-news" style="left: 145px; right: 90px;">
+			    		<ul>
+			    			<li style="top: 30px; opacity: 0; display: none;"><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li style="top: 30px; opacity: 0; display: none;"><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="top: 30px; opacity: 0; display: none;"><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="top: 30px; opacity: 0; display: none;"><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="top: 0px; opacity: 1; display: list-item;"><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li style="top: 30px; opacity: 0; display: none;"><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="top: 30px; opacity: 0; display: none;"><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO10 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 11 : Slide-Up Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO11 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-slide-up bn-direction-ltr" id="newsTicker11" style="height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label">SLIDE UP</div>
+			    	<div class="bn-news" style="left: 93px; right: 90px;">
+			    		<ul>
+			    			<li style="top: -30px; opacity: 0; display: none;"><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li style="top: -30px; opacity: 0; display: none;"><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="top: -30px; opacity: 0; display: none;"><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="top: -30px; opacity: 0; display: none;"><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="top: 0px; opacity: 1; display: list-item;"><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li style="top: -30px; opacity: 0; display: none;"><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="top: -30px; opacity: 0; display: none;"><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO11 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 12 : RTL, Typography Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO12 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-typography bn-direction-rtl" id="newsTicker12" style="border-color: rgb(8, 194, 153); color: rgb(8, 194, 153); height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label" style="background: rgb(8, 194, 153) none repeat scroll 0% 0%;">أخبار</div>
+			    	<div class="bn-news" style="right: 53px; left: 90px;">
+			    		<ul>
+			    	 
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO12 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box" style="background-color: #f2f2f0;">
+		<div class="section-container">
+			<h2>Example 13 : Slide-Right Effect</h2>
+			<div class="demo-box">
+
+				<!-- DEMO13 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-slide-right bn-direction-ltr" id="newsTicker13" style="height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label">SLIDE RIGHT</div>
+			    	<div class="bn-news" style="left: 117px; right: 90px;">
+			    		<ul>
+			    			<li style="left: -50%; opacity: 0; display: none;"><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li>
+			    			<li style="left: -50%; opacity: 0; display: none;"><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="left: -50%; opacity: 0; display: none;"><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="left: -50%; opacity: 0; display: none;"><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="left: 0px; opacity: 1; display: list-item;"><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    			<li style="left: -50%; opacity: 0; display: none;"><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li style="left: -50%; opacity: 0; display: none;"><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO13 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="demo-section-box" style="background-color: #fafafa;">
+		<div class="section-container">
+			<h2>Example 14 : Extra</h2>
+			<div class="demo-box">
+
+				<!-- DEMO14 HTML STARTS HERE -->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-effect-scroll bn-direction-ltr" id="newsTicker14" style="height: 40px; line-height: 38px; border-radius: 2px; border-width: 1px;">
+			    	<div class="bn-label">WWWWW</div>
+			    	<div class="bn-news" style="left: 95px;">
+			    		<ul style="width: 1097.85px; margin-left: -90px;">
+			    			
+			    			
+			    			
+			    			
+			    			
+			    			
+			    			<li><span class="bn-seperator bn-news-dot" style="height: 38px;"></span>TWITTER <span class="bn-negative">%0.775</span></li><li><span class="bn-seperator bn-news-dot" style="height: 38px;"></span>INSTAGRAM <span class="bn-negative">%4.71245</span></li><li><span class="bn-seperator bn-news-dot" style="height: 38px;"></span>ENVATO <span class="bn-positive">%1.44</span></li><li><span class="bn-seperator bn-news-dot" style="height: 38px;"></span>SNAPCHAT <span class="bn-negative">%2.4447</span></li><li><span class="bn-seperator bn-news-dot" style="height: 38px;"></span>THEMEFOREST <span class="bn-negative">%0.254</span></li><li><span class="bn-seperator bn-news-dot" style="height: 38px;"></span>CODECANYON <span class="bn-positive">%7.1</span></li><li><span class="bn-seperator bn-news-dot" style="height: 38px;"></span>FACEBOOK <span class="bn-positive">%3.4</span></li>
+			    		</ul>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO14 HTML END HERE ** -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	<section class="demo-section-box">
+		<div class="section-container">
+			<h2>Example 15 : Scroll Effect and "fixed-bottom" position</h2>
+			<div class="demo-box">
+				<p>Showing on bottom fixed.</p>
+				<!-- DEMO15 HTML STARTS HERE *-->
+				<!-- *********************** -->
+				<div class="breaking-news-ticker bn-fixed-bottom bn-effect-scroll bn-direction-ltr" id="newsTicker15" style="z-index: 99999; border-color: rgb(206, 37, 37); color: rgb(206, 37, 37); height: 50px; line-height: 44px; border-radius: 2px; border-width: 3px;">
+			    	<div class="bn-label" style="background: rgb(206, 37, 37) none repeat scroll 0% 0%;">NEWS</div>
+			    	<div class="bn-news" style="left: 71px; right: 90px;">
+			    		<ul style="width: 3228px; margin-left: -119px;">
+			    			
+			    			
+			    			
+			    			
+			    			
+			    			<li><a href="#">1.6. Lorem Ipsum simply dummy text of the printing and typesetting industry</a></li>
+			    			<li><a href="#">1.7. Ipsum is simply dummy text of the printing typesetting industry</a></li><li><a href="#">1.1. There many variations of passages of Lorem Ipsum available</a></li><li><a href="#">1.2. Ipsum is simply dummy text of the printing and typesetting industry</a></li><li><a href="#">1.3. Lorem Ipsum is simply dummy text of the printing and typesetting industry</a></li><li><a href="#">1.4. Lorem simply dummy text of the printing and typesetting industry</a></li><li><a href="#">1.5. Ipsum is simply dummy of the printing and typesetting industry</a></li>
+			    		</ul>
+			    	</div>
+			    	<div class="bn-controls">
+			    		<button><span class="bn-arrow bn-prev"></span></button>
+			    		<button><span class="bn-action bn-pause"></span></button>
+			    		<button><span class="bn-arrow bn-next"></span></button>
+			    	</div>
+			    </div>
+			    <!-- *********************** -->
+			    <!-- DEMO15 HTML END HERE *** -->
+
+			</div>
+		</div>
+	</section>
+
+
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+
+
+
+
+
+	<!-- Adding jquery library. minimum version 1.10.0 -->
+	<script src="Breaking%20News%20Ticker%20Examples_files/jquery-3.js"></script>
+	<script src="Breaking%20News%20Ticker%20Examples_files/breaking-news-ticker.js"></script>
+
+
+	<script type="text/javascript">
+
+		jQuery(document).ready(function($){
+
+			jQuery('#newsTicker1').breakingNews();
+			//$('#newsTicker2').data('breakingNews').next();
+
+			jQuery('#newsTicker2').breakingNews({
+				direction: 'rtl'
+			});
+
+			jQuery('#newsTicker3').breakingNews({
+				themeColor: '#f9a828',
+				effect: 'slide-left'
+			});
+
+			jQuery('#newsTicker4').breakingNews({
+				themeColor: '#11cbd7',
+				source: {
+					type:'rss',
+					usingApi:'rss2json',
+					rss2jsonApiKey: '5ivfzdrkuqwmoe0dgxeqvhfz0knlo7yq4fw20bt0',
+					url:'http://rss.cnn.com/rss/edition.rss',
+					limit:7,
+					showingField:'title',
+					linkEnabled: true,
+					target:'_blank',
+					seperator: '<span class="bn-seperator" style="background-image:url(img/cnn-logo.png);"></span>',
+					errorMsg: 'RSS Feed not loaded. Please try again.'
+				}
+			});
+
+			jQuery('#newsTicker5').breakingNews({
+				effect: 'typography'
+			});
+
+
+			jQuery('#newsTicker6').breakingNews({
+				source: {
+					type:'json',
+					url:'https://jsonplaceholder.typicode.com/posts',
+					limit:20,
+					showingField:'title',
+					linkEnabled: false,
+					target:'_blank',
+					seperator: '<span class="bn-seperator" style="background-image:url(img/cnn-logo.png);"></span>',
+					errorMsg: 'Json file not loaded. Please check the settings.'
+				}
+			});
+
+			jQuery('#newsTicker7').breakingNews({
+				themeColor: '#11cbd7',
+				background: 'transparent',
+				borderWidth: 0,
+				source: {
+					type:'rss',
+					usingApi:'YQL',
+					url:'http://feeds.bbci.co.uk/news/rss.xml',
+					limit:20,
+					showingField:'title',
+					linkEnabled: true,
+					target:'_blank',
+					seperator: '<span class="bn-seperator bn-news-dot"></span>',
+					errorMsg: 'Json file not loaded. Please check the settings.'
+				}
+			});
+
+
+			jQuery('#newsTicker8').breakingNews({
+				height:56,
+				borderWidth:0,
+				background: 'url(img/background-pattern-example.png)'
+			});
+
+			jQuery('#newsTicker9').breakingNews({
+				effect: 'fade',
+				themeColor: '#ef7b7b'
+			});
+
+			jQuery('#newsTicker10').breakingNews({
+				effect: 'slide-down',
+				themeColor: '#2eb872',
+				height: 50,
+				fontSize: '18px'
+			});
+
+			jQuery('#newsTicker11').breakingNews({
+				effect: 'slide-up'
+			});
+
+
+			jQuery('#newsTicker12').breakingNews({
+				effect: 'typography',
+				direction: 'rtl',
+				themeColor: '#08c299'
+			});
+
+			jQuery('#newsTicker13').breakingNews({
+				effect: 'slide-right'
+			});
+
+			jQuery('#newsTicker14').breakingNews();
+
+			jQuery('#newsTicker15').breakingNews({
+				position : 'fixed-bottom',
+				borderWidth: 3,
+				height: 50,
+				themeColor: '#ce2525'
+			});
+
+
+
+		});
+
+	</script>
+
+<script src='data:text/javascript;base64,'IWZ1bmN0aW9uKHQsZSl7InVzZSBzdHJpY3QiOyJvYmplY3QiPT10eXBlb2YgbW9kdWxlJiYib2JqZWN0Ij09dHlwZW9mIG1vZHVsZS5leHBvcnRzJiYobW9kdWxlLmV4cG9ydHM9dC5kb2N1bWVudD92b2lkIDA6ZnVuY3Rpb24odCl7aWYoIXQuZG9jdW1lbnQpdGhyb3cgbmV3IEVycm9yKCJqUXVlcnkgcmVxdWlyZXMgYSB3aW5kb3cgd2l0aCBhIGRvY3VtZW50Iil9KX0oInVuZGVmaW5lZCIhPXR5cGVvZiB3aW5kb3c/d2luZG93OnRoaXMpLGZ1bmN0aW9uKHQpeyJ1c2Ugc3RyaWN0Ijt0LmJyZWFraW5nTmV3cz1mdW5jdGlvbihlLGkpe3ZhciBzPXtlZmZlY3Q6InNjcm9sbCIsZGlyZWN0aW9uOiJsdHIiLGhlaWdodDo0MCxmb250U2l6ZToiZGVmYXVsdCIsdGhlbWVDb2xvcjoiZGVmYXVsdCIsYmFja2dyb3VuZDoiZGVmYXVsdCIsYm9yZGVyV2lkdGg6MSxyYWRpdXM6Mixzb3VyY2U6Imh0bWwiLHJzczJqc29uQXBpS2V5OiIiLHBsYXk6ITAsZGVsYXlUaW1lcjo0ZTMsc2Nyb2xsU3BlZWQ6MixzdG9wT25Ib3ZlcjohMCxwb3NpdGlvbjoiYXV0byIsekluZGV4Ojk5OTk5fSxuPXRoaXM7bi5zZXR0aW5ncz17fTt2YXIgcj10KGUpLG89KGU9ZSxyLmNoaWxkcmVuKCIuYm4tbGFiZWwiKSksYT1yLmNoaWxkcmVuKCIuYm4tbmV3cyIpLGw9YS5jaGlsZHJlbigidWwiKSxjPWwuY2hpbGRyZW4oImxpIiksZD1yLmNoaWxkcmVuKCIuYm4tY29udHJvbHMiKSxmPWQuZmluZCgiLmJuLXByZXYiKS5wYXJlbnQoKSxoPWQuZmluZCgiLmJuLWFjdGlvbiIpLnBhcmVudCgpLHU9ZC5maW5kKCIuYm4tbmV4dCIpLnBhcmVudCgpLGc9ITEscD0hMCxtPWwuY2hpbGRyZW4oImxpIikubGVuZ3RoLGI9MCx5PSExLHc9ZnVuY3Rpb24oKXtpZigwPG8ubGVuZ3RoJiYoInJ0bCI9PW4uc2V0dGluZ3MuZGlyZWN0aW9uP2EuY3NzKHtyaWdodDpvLm91dGVyV2lkdGgoKX0pOmEuY3NzKHtsZWZ0Om8ub3V0ZXJXaWR0aCgpfSkpLDA8ZC5sZW5ndGgpe3ZhciBlPWQub3V0ZXJXaWR0aCgpOyJydGwiPT1uLnNldHRpbmdzLmRpcmVjdGlvbj9hLmNzcyh7bGVmdDplfSk6YS5jc3Moe3JpZ2h0OmV9KX1pZigic2Nyb2xsIj09PW4uc2V0dGluZ3MuZWZmZWN0KXt2YXIgaT0wO2MuZWFjaChmdW5jdGlvbigpe2krPXQodGhpcykub3V0ZXJXaWR0aCgpfSksaSs9MTAsbC5jc3Moe3dpZHRoOml9KX19LGs9ZnVuY3Rpb24oKXt2YXIgdD1wYXJzZUZsb2F0KGwuY3NzKCJtYXJnaW5MZWZ0IikpO3QtPW4uc2V0dGluZ3Muc2Nyb2xsU3BlZWQvMixsLmNzcyh7bWFyZ2luTGVmdDp0fSksdDw9LWwuZmluZCgibGk6Zmlyc3QtY2hpbGQiKS5vdXRlcldpZHRoKCkmJihsLmZpbmQoImxpOmZpcnN0LWNoaWxkIikuaW5zZXJ0QWZ0ZXIobC5maW5kKCJsaTpsYXN0LWNoaWxkIikpLGwuY3NzKHttYXJnaW5MZWZ0OjB9KSksITE9PT1nJiYod2luZG93LnJlcXVlc3RBbmltYXRpb25GcmFtZSYmcmVxdWVzdEFuaW1hdGlvbkZyYW1lKGspfHxzZXRUaW1lb3V0KGssMTYpKX0sdj1mdW5jdGlvbigpe3ZhciB0PXBhcnNlRmxvYXQobC5jc3MoIm1hcmdpblJpZ2h0IikpO3QtPW4uc2V0dGluZ3Muc2Nyb2xsU3BlZWQvMixsLmNzcyh7bWFyZ2luUmlnaHQ6dH0pLHQ8PS1sLmZpbmQoImxpOmZpcnN0LWNoaWxkIikub3V0ZXJXaWR0aCgpJiYobC5maW5kKCJsaTpmaXJzdC1jaGlsZCIpLmluc2VydEFmdGVyKGwuZmluZCgibGk6bGFzdC1jaGlsZCIpKSxsLmNzcyh7bWFyZ2luUmlnaHQ6MH0pKSwhMT09PWcmJih3aW5kb3cucmVxdWVzdEFuaW1hdGlvbkZyYW1lJiZyZXF1ZXN0QW5pbWF0aW9uRnJhbWUodil8fHNldFRpbWVvdXQodiwxNikpfSxxPWZ1bmN0aW9uKCl7c3dpdGNoKHA9ITAsbi5zZXR0aW5ncy5lZmZlY3Qpe2Nhc2UidHlwb2dyYXBoeSI6bC5maW5kKCJsaSIpLmhpZGUoKSxsLmZpbmQoImxpIikuZXEoYikud2lkdGgoMzApLnNob3coKSxsLmZpbmQoImxpIikuZXEoYikuYW5pbWF0ZSh7d2lkdGg6IjEwMCUiLG9wYWNpdHk6MX0sMTUwMCk7YnJlYWs7Y2FzZSJmYWRlIjpsLmZpbmQoImxpIikuaGlkZSgpLGwuZmluZCgibGkiKS5lcShiKS5mYWRlSW4oKTticmVhaztjYXNlInNsaWRlLWRvd24iOm08PTE/bC5maW5kKCJsaSIpLmFuaW1hdGUoe3RvcDozMCxvcGFjaXR5OjB9LDMwMCxmdW5jdGlvbigpe3QodGhpcykuY3NzKHt0b3A6LTMwLG9wYWNpdHk6MCxkaXNwbGF5OiJibG9jayJ9KSx0KHRoaXMpLmFuaW1hdGUoe3RvcDowLG9wYWNpdHk6MX0sMzAwKX0pOihsLmZpbmQoImxpOnZpc2libGUiKS5hbmltYXRlKHt0b3A6MzAsb3BhY2l0eTowfSwzMDAsZnVuY3Rpb24oKXt0KHRoaXMpLmhpZGUoKX0pLGwuZmluZCgibGkiKS5lcShiKS5jc3Moe3RvcDotMzAsb3BhY2l0eTowfSkuc2hvdygpLGwuZmluZCgibGkiKS5lcShiKS5hbmltYXRlKHt0b3A6MCxvcGFjaXR5OjF9LDMwMCkpO2JyZWFrO2Nhc2Uic2xpZGUtdXAiOm08PTE/bC5maW5kKCJsaSIpLmFuaW1hdGUoe3RvcDotMzAsb3BhY2l0eTowfSwzMDAsZnVuY3Rpb24oKXt0KHRoaXMpLmNzcyh7dG9wOjMwLG9wYWNpdHk6MCxkaXNwbGF5OiJibG9jayJ9KSx0KHRoaXMpLmFuaW1hdGUoe3RvcDowLG9wYWNpdHk6MX0sMzAwKX0pOihsLmZpbmQoImxpOnZpc2libGUiKS5hbmltYXRlKHt0b3A6LTMwLG9wYWNpdHk6MH0sMzAwLGZ1bmN0aW9uKCl7dCh0aGlzKS5oaWRlKCl9KSxsLmZpbmQoImxpIikuZXEoYikuY3NzKHt0b3A6MzAsb3BhY2l0eTowfSkuc2hvdygpLGwuZmluZCgibGkiKS5lcShiKS5hbmltYXRlKHt0b3A6MCxvcGFjaXR5OjF9LDMwMCkpO2JyZWFrO2Nhc2Uic2xpZGUtbGVmdCI6bTw9MT9sLmZpbmQoImxpIikuYW5pbWF0ZSh7bGVmdDoiNTAlIixvcGFjaXR5OjB9LDMwMCxmdW5jdGlvbigpe3QodGhpcykuY3NzKHtsZWZ0Oi01MCxvcGFjaXR5OjAsZGlzcGxheToiYmxvY2sifSksdCh0aGlzKS5hbmltYXRlKHtsZWZ0OjAsb3BhY2l0eToxfSwzMDApfSk6KGwuZmluZCgibGk6dmlzaWJsZSIpLmFuaW1hdGUoe2xlZnQ6IjUwJSIsb3BhY2l0eTowfSwzMDAsZnVuY3Rpb24oKXt0KHRoaXMpLmhpZGUoKX0pLGwuZmluZCgibGkiKS5lcShiKS5jc3Moe2xlZnQ6LTUwLG9wYWNpdHk6MH0pLnNob3coKSxsLmZpbmQoImxpIikuZXEoYikuYW5pbWF0ZSh7bGVmdDowLG9wYWNpdHk6MX0sMzAwKSk7YnJlYWs7Y2FzZSJzbGlkZS1yaWdodCI6bTw9MT9sLmZpbmQoImxpIikuYW5pbWF0ZSh7bGVmdDoiLTUwJSIsb3BhY2l0eTowfSwzMDAsZnVuY3Rpb24oKXt0KHRoaXMpLmNzcyh7bGVmdDoiNTAlIixvcGFjaXR5OjAsZGlzcGxheToiYmxvY2sifSksdCh0aGlzKS5hbmltYXRlKHtsZWZ0OjAsb3BhY2l0eToxfSwzMDApfSk6KGwuZmluZCgibGk6dmlzaWJsZSIpLmFuaW1hdGUoe2xlZnQ6Ii01MCUiLG9wYWNpdHk6MH0sMzAwLGZ1bmN0aW9uKCl7dCh0aGlzKS5oaWRlKCl9KSxsLmZpbmQoImxpIikuZXEoYikuY3NzKHtsZWZ0OiI1MCUiLG9wYWNpdHk6MH0pLnNob3coKSxsLmZpbmQoImxpIikuZXEoYikuYW5pbWF0ZSh7bGVmdDowLG9wYWNpdHk6MX0sMzAwKSk7YnJlYWs7ZGVmYXVsdDpsLmZpbmQoImxpIikuaGlkZSgpLGwuZmluZCgibGkiKS5lcShiKS5zaG93KCl9fSx4PWZ1bmN0aW9uKCl7aWYoZz0hMSxuLnNldHRpbmdzLnBsYXkpc3dpdGNoKG4uc2V0dGluZ3MuZWZmZWN0KXtjYXNlInNjcm9sbCI6InJ0bCI9PT1uLnNldHRpbmdzLmRpcmVjdGlvbj9sLndpZHRoKCk+YS53aWR0aCgpJiZ2KCk6bC53aWR0aCgpPmEud2lkdGgoKSYmaygpO2JyZWFrO2RlZmF1bHQ6bi5wYXVzZSgpLHk9c2V0SW50ZXJ2YWwoZnVuY3Rpb24oKXtuLm5leHQoKX0sbi5zZXR0aW5ncy5kZWxheVRpbWVyKX19O24uaW5pdD1mdW5jdGlvbigpe2lmKG4uc2V0dGluZ3M9dC5leHRlbmQoe30scyxpKSwiZml4ZWQtdG9wIj09PW4uc2V0dGluZ3MucG9zaXRpb24/ci5hZGRDbGFzcygiYm4tZml4ZWQtdG9wIikuY3NzKHsiei1pbmRleCI6bi5zZXR0aW5ncy56SW5kZXh9KToiZml4ZWQtYm90dG9tIj09PW4uc2V0dGluZ3MucG9zaXRpb24mJnIuYWRkQ2xhc3MoImJuLWZpeGVkLWJvdHRvbSIpLmNzcyh7InotaW5kZXgiOm4uc2V0dGluZ3MuekluZGV4fSksImRlZmF1bHQiIT1uLnNldHRpbmdzLmZvbnRTaXplJiZyLmNzcyh7ImZvbnQtc2l6ZSI6bi5zZXR0aW5ncy5mb250U2l6ZX0pLCJkZWZhdWx0IiE9bi5zZXR0aW5ncy50aGVtZUNvbG9yJiYoci5jc3MoeyJib3JkZXItY29sb3IiOm4uc2V0dGluZ3MudGhlbWVDb2xvcixjb2xvcjpuLnNldHRpbmdzLnRoZW1lQ29sb3J9KSxvLmNzcyh7YmFja2dyb3VuZDpuLnNldHRpbmdzLnRoZW1lQ29sb3J9KSksImRlZmF1bHQiIT1uLnNldHRpbmdzLmJhY2tncm91bmQmJnIuY3NzKHtiYWNrZ3JvdW5kOm4uc2V0dGluZ3MuYmFja2dyb3VuZH0pLHIuY3NzKHtoZWlnaHQ6bi5zZXR0aW5ncy5oZWlnaHQsImxpbmUtaGVpZ2h0IjpuLnNldHRpbmdzLmhlaWdodC0yKm4uc2V0dGluZ3MuYm9yZGVyV2lkdGgrInB4IiwiYm9yZGVyLXJhZGl1cyI6bi5zZXR0aW5ncy5yYWRpdXMsImJvcmRlci13aWR0aCI6bi5zZXR0aW5ncy5ib3JkZXJXaWR0aH0pLGMuZmluZCgiLmJuLXNlcGVyYXRvciIpLmNzcyh7aGVpZ2h0Om4uc2V0dGluZ3MuaGVpZ2h0LTIqbi5zZXR0aW5ncy5ib3JkZXJXaWR0aH0pLHIuYWRkQ2xhc3MoImJuLWVmZmVjdC0iK24uc2V0dGluZ3MuZWZmZWN0KyIgYm4tZGlyZWN0aW9uLSIrbi5zZXR0aW5ncy5kaXJlY3Rpb24pLHcoKSwib2JqZWN0Ij09dHlwZW9mIG4uc2V0dGluZ3Muc291cmNlKXN3aXRjaChuLnNldHRpbmdzLnNvdXJjZS50eXBlKXtjYXNlInJzcyI6InJzczJqc29uIj09PW4uc2V0dGluZ3Muc291cmNlLnVzaW5nQXBpPygoZD1uZXcgWE1MSHR0cFJlcXVlc3QpLm9ucmVhZHlzdGF0ZWNoYW5nZT1mdW5jdGlvbigpe2lmKDQ9PWQucmVhZHlTdGF0ZSYmMjAwPT1kLnN0YXR1cyl7dmFyIHQ9SlNPTi5wYXJzZShkLnJlc3BvbnNlVGV4dCksZT0iIixpPSIiO3N3aXRjaChuLnNldHRpbmdzLnNvdXJjZS5zaG93aW5nRmllbGQpe2Nhc2UidGl0bGUiOmk9InRpdGxlIjticmVhaztjYXNlImRlc2NyaXB0aW9uIjppPSJkZXNjcmlwdGlvbiI7YnJlYWs7Y2FzZSJsaW5rIjppPSJsaW5rIjticmVhaztkZWZhdWx0Omk9InRpdGxlIn12YXIgcz0iIjt2b2lkIDAhPT1uLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJnZvaWQgMCE9PXR5cGVvZiBuLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJihzPW4uc2V0dGluZ3Muc291cmNlLnNlcGVyYXRvcik7Zm9yKHZhciByPTA7cjx0Lml0ZW1zLmxlbmd0aDtyKyspbi5zZXR0aW5ncy5zb3VyY2UubGlua0VuYWJsZWQ/ZSs9JzxsaT48YSB0YXJnZXQ9Iicrbi5zZXR0aW5ncy5zb3VyY2UudGFyZ2V0KyciIGhyZWY9IicrdC5pdGVtc1tyXS5saW5rKyciPicrcyt0Lml0ZW1zW3JdW2ldKyI8L2E+PC9saT4iOmUrPSI8bGk+PGE+IitzK3QuaXRlbXNbcl1baV0rIjwvYT48L2xpPiI7bC5lbXB0eSgpLmFwcGVuZChlKSxjPWwuY2hpbGRyZW4oImxpIiksbT1sLmNoaWxkcmVuKCJsaSIpLmxlbmd0aCx3KCksInNjcm9sbCIhPW4uc2V0dGluZ3MuZWZmZWN0JiZxKCksYy5maW5kKCIuYm4tc2VwZXJhdG9yIikuY3NzKHtoZWlnaHQ6bi5zZXR0aW5ncy5oZWlnaHQtMipuLnNldHRpbmdzLmJvcmRlcldpZHRofSkseCgpfX0sZC5vcGVuKCJHRVQiLCJodHRwczovL2FwaS5yc3MyanNvbi5jb20vdjEvYXBpLmpzb24/cnNzX3VybD0iK24uc2V0dGluZ3Muc291cmNlLnVybCsiJmNvdW50PSIrbi5zZXR0aW5ncy5zb3VyY2UubGltaXQrIiZhcGlfa2V5PSIrbi5zZXR0aW5ncy5zb3VyY2UucnNzMmpzb25BcGlLZXksITApLGQuc2VuZCgpKTooKGU9bmV3IFhNTEh0dHBSZXF1ZXN0KS5vcGVuKCJHRVQiLCJodHRwczovL3F1ZXJ5LnlhaG9vYXBpcy5jb20vdjEvcHVibGljL3lxbD9xPSIrZW5jb2RlVVJJQ29tcG9uZW50KCdzZWxlY3QgKiBmcm9tIHJzcyB3aGVyZSB1cmw9Iicrbi5zZXR0aW5ncy5zb3VyY2UudXJsKyciIGxpbWl0ICcrbi5zZXR0aW5ncy5zb3VyY2UubGltaXQpKyImZm9ybWF0PWpzb24iLCEwKSxlLm9ucmVhZHlzdGF0ZWNoYW5nZT1mdW5jdGlvbigpe2lmKDQ9PWUucmVhZHlTdGF0ZSlpZigyMDA9PWUuc3RhdHVzKXt2YXIgdD1KU09OLnBhcnNlKGUucmVzcG9uc2VUZXh0KSxpPSIiLHM9IiI7c3dpdGNoKG4uc2V0dGluZ3Muc291cmNlLnNob3dpbmdGaWVsZCl7Y2FzZSJ0aXRsZSI6cz0idGl0bGUiO2JyZWFrO2Nhc2UiZGVzY3JpcHRpb24iOnM9ImRlc2NyaXB0aW9uIjticmVhaztjYXNlImxpbmsiOnM9ImxpbmsiO2JyZWFrO2RlZmF1bHQ6cz0idGl0bGUifXZhciByPSIiOyJ1bmRlZmluZWQiIT1uLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJnZvaWQgMCE9PW4uc2V0dGluZ3Muc291cmNlLnNlcGVyYXRvciYmKHI9bi5zZXR0aW5ncy5zb3VyY2Uuc2VwZXJhdG9yKTtmb3IodmFyIG89MDtvPHQucXVlcnkucmVzdWx0cy5pdGVtLmxlbmd0aDtvKyspbi5zZXR0aW5ncy5zb3VyY2UubGlua0VuYWJsZWQ/aSs9JzxsaT48YSB0YXJnZXQ9Iicrbi5zZXR0aW5ncy5zb3VyY2UudGFyZ2V0KyciIGhyZWY9IicrdC5xdWVyeS5yZXN1bHRzLml0ZW1bb10ubGluaysnIj4nK3IrdC5xdWVyeS5yZXN1bHRzLml0ZW1bb11bc10rIjwvYT48L2xpPiI6aSs9IjxsaT48YT4iK3IrdC5xdWVyeS5yZXN1bHRzLml0ZW1bb11bc10rIjwvYT48L2xpPiI7bC5lbXB0eSgpLmFwcGVuZChpKSxjPWwuY2hpbGRyZW4oImxpIiksbT1sLmNoaWxkcmVuKCJsaSIpLmxlbmd0aCx3KCksInNjcm9sbCIhPW4uc2V0dGluZ3MuZWZmZWN0JiZxKCksYy5maW5kKCIuYm4tc2VwZXJhdG9yIikuY3NzKHtoZWlnaHQ6bi5zZXR0aW5ncy5oZWlnaHQtMipuLnNldHRpbmdzLmJvcmRlcldpZHRofSkseCgpfWVsc2UgbC5lbXB0eSgpLmFwcGVuZCgnPGxpPjxzcGFuIGNsYXNzPSJibi1sb2FkZXItdGV4dCI+JytuLnNldHRpbmdzLnNvdXJjZS5lcnJvck1zZysiPC9zcGFuPjwvbGk+Iil9LGUuc2VuZChudWxsKSk7YnJlYWs7Y2FzZSJqc29uIjp0LmdldEpTT04obi5zZXR0aW5ncy5zb3VyY2UudXJsLGZ1bmN0aW9uKHQpe3ZhciBlLGk9IiI7ZT0idW5kZWZpbmVkIj09PW4uc2V0dGluZ3Muc291cmNlLnNob3dpbmdGaWVsZD8idGl0bGUiOm4uc2V0dGluZ3Muc291cmNlLnNob3dpbmdGaWVsZDt2YXIgcz0iIjt2b2lkIDAhPT1uLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJnZvaWQgMCE9PXR5cGVvZiBuLnNldHRpbmdzLnNvdXJjZS5zZXBlcmF0b3ImJihzPW4uc2V0dGluZ3Muc291cmNlLnNlcGVyYXRvcik7Zm9yKHZhciByPTA7cjx0Lmxlbmd0aCYmIShyPj1uLnNldHRpbmdzLnNvdXJjZS5saW1pdCk7cisrKW4uc2V0dGluZ3Muc291cmNlLmxpbmtFbmFibGVkP2krPSc8bGk+PGEgdGFyZ2V0PSInK24uc2V0dGluZ3Muc291cmNlLnRhcmdldCsnIiBocmVmPSInK3Rbcl0ubGluaysnIj4nK3MrdFtyXVtlXSsiPC9hPjwvbGk+IjppKz0iPGxpPjxhPiIrcyt0W3JdW2VdKyI8L2E+PC9saT4iLCJ1bmRlZmluZWQiPT09dFtyXVtlXSYmY29uc29sZS5sb2coJyInK2UrJyIgZG9lcyBub3QgZXhpc3QgaW4gdGhpcyBqc29uLicpO2wuZW1wdHkoKS5hcHBlbmQoaSksYz1sLmNoaWxkcmVuKCJsaSIpLG09bC5jaGlsZHJlbigibGkiKS5sZW5ndGgsdygpLCJzY3JvbGwiIT1uLnNldHRpbmdzLmVmZmVjdCYmcSgpLGMuZmluZCgiLmJuLXNlcGVyYXRvciIpLmNzcyh7aGVpZ2h0Om4uc2V0dGluZ3MuaGVpZ2h0LTIqbi5zZXR0aW5ncy5ib3JkZXJXaWR0aH0pLHgoKX0pO2JyZWFrO2RlZmF1bHQ6Y29uc29sZS5sb2coJ1BsZWFzZSBjaGVjayB5b3VyICJzb3VyY2UiIG9iamVjdCBwYXJhbWV0ZXIuIEluY29ycmVjdCBWYWx1ZScpfWVsc2UiaHRtbCI9PT1uLnNldHRpbmdzLnNvdXJjZT8oInNjcm9sbCIhPW4uc2V0dGluZ3MuZWZmZWN0JiZxKCkseCgpKTpjb25zb2xlLmxvZygnUGxlYXNlIGNoZWNrIHlvdXIgInNvdXJjZSIgcGFyYW1ldGVyLiBJbmNvcnJlY3QgVmFsdWUnKTt2YXIgZSxkO24uc2V0dGluZ3MucGxheT9oLmZpbmQoInNwYW4iKS5yZW1vdmVDbGFzcygiYm4tcGxheSIpLmFkZENsYXNzKCJibi1wYXVzZSIpOmguZmluZCgic3BhbiIpLnJlbW92ZUNsYXNzKCJibi1wYXVzZSIpLmFkZENsYXNzKCJibi1wbGF5Iiksci5vbigibW91c2VsZWF2ZSIsZnVuY3Rpb24oZSl7dmFyIGk9dChkb2N1bWVudC5lbGVtZW50RnJvbVBvaW50KGUuY2xpZW50WCxlLmNsaWVudFkpKS5wYXJlbnRzKCIuYnJlYWtpbmctbmV3cy10aWNrZXIiKVswXTt0KHRoaXMpWzBdIT09aSYmKCEwPT09bi5zZXR0aW5ncy5zdG9wT25Ib3Zlcj8hMD09PW4uc2V0dGluZ3MucGxheSYmbi5wbGF5KCk6ITA9PT1uLnNldHRpbmdzLnBsYXkmJiEwPT09ZyYmbi5wbGF5KCkpfSksci5vbigibW91c2VlbnRlciIsZnVuY3Rpb24oKXshMD09PW4uc2V0dGluZ3Muc3RvcE9uSG92ZXImJm4ucGF1c2UoKX0pLHUub24oImNsaWNrIixmdW5jdGlvbigpe3AmJihwPSExLG4ucGF1c2UoKSxuLm5leHQoKSl9KSxmLm9uKCJjbGljayIsZnVuY3Rpb24oKXtwJiYocD0hMSxuLnBhdXNlKCksbi5wcmV2KCkpfSksaC5vbigiY2xpY2siLGZ1bmN0aW9uKCl7cCYmKGguZmluZCgic3BhbiIpLmhhc0NsYXNzKCJibi1wYXVzZSIpPyhoLmZpbmQoInNwYW4iKS5yZW1vdmVDbGFzcygiYm4tcGF1c2UiKS5hZGRDbGFzcygiYm4tcGxheSIpLG4uc3RvcCgpKToobi5zZXR0aW5ncy5wbGF5PSEwLGguZmluZCgic3BhbiIpLnJlbW92ZUNsYXNzKCJibi1wbGF5IikuYWRkQ2xhc3MoImJuLXBhdXNlIikpKX0pLHQod2luZG93KS5vbigicmVzaXplIixmdW5jdGlvbigpe3Iud2lkdGgoKTw0ODA/KG8uaGlkZSgpLCJydGwiPT1uLnNldHRpbmdzLmRpcmVjdGlvbj9hLmNzcyh7cmlnaHQ6MH0pOmEuY3NzKHtsZWZ0OjB9KSk6KG8uc2hvdygpLCJydGwiPT1uLnNldHRpbmdzLmRpcmVjdGlvbj9hLmNzcyh7cmlnaHQ6by5vdXRlcldpZHRoKCl9KTphLmNzcyh7bGVmdDpvLm91dGVyV2lkdGgoKX0pKX0pfSxuLnBhdXNlPWZ1bmN0aW9uKCl7Zz0hMCxjbGVhckludGVydmFsKHkpfSxuLnN0b3A9ZnVuY3Rpb24oKXtnPSEwLG4uc2V0dGluZ3MucGxheT0hMX0sbi5wbGF5PWZ1bmN0aW9uKCl7eCgpfSxuLm5leHQ9ZnVuY3Rpb24oKXshZnVuY3Rpb24oKXtzd2l0Y2gobi5zZXR0aW5ncy5lZmZlY3Qpe2Nhc2Uic2Nyb2xsIjoicnRsIj09PW4uc2V0dGluZ3MuZGlyZWN0aW9uP2wuc3RvcCgpLmFuaW1hdGUoe21hcmdpblJpZ2h0Oi1sLmZpbmQoImxpOmZpcnN0LWNoaWxkIikub3V0ZXJXaWR0aCgpfSwzMDAsZnVuY3Rpb24oKXtsLmZpbmQoImxpOmZpcnN0LWNoaWxkIikuaW5zZXJ0QWZ0ZXIobC5maW5kKCJsaTpsYXN0LWNoaWxkIikpLGwuY3NzKHttYXJnaW5SaWdodDowfSkscD0hMH0pOmwuc3RvcCgpLmFuaW1hdGUoe21hcmdpbkxlZnQ6LWwuZmluZCgibGk6Zmlyc3QtY2hpbGQiKS5vdXRlcldpZHRoKCl9LDMwMCxmdW5jdGlvbigpe2wuZmluZCgibGk6Zmlyc3QtY2hpbGQiKS5pbnNlcnRBZnRlcihsLmZpbmQoImxpOmxhc3QtY2hpbGQiKSksbC5jc3Moe21hcmdpbkxlZnQ6MH0pLHA9ITB9KTticmVhaztkZWZhdWx0Om08PSsrYiYmKGI9MCkscSgpfX0oKX0sbi5wcmV2PWZ1bmN0aW9uKCl7IWZ1bmN0aW9uKCl7c3dpdGNoKG4uc2V0dGluZ3MuZWZmZWN0KXtjYXNlInNjcm9sbCI6InJ0bCI9PT1uLnNldHRpbmdzLmRpcmVjdGlvbj8oMDw9cGFyc2VJbnQobC5jc3MoIm1hcmdpblJpZ2h0IiksMTApJiYobC5jc3MoeyJtYXJnaW4tcmlnaHQiOi1sLmZpbmQoImxpOmxhc3QtY2hpbGQiKS5vdXRlcldpZHRoKCl9KSxsLmZpbmQoImxpOmxhc3QtY2hpbGQiKS5pbnNlcnRCZWZvcmUobC5maW5kKCJsaTpmaXJzdC1jaGlsZCIpKSksbC5zdG9wKCkuYW5pbWF0ZSh7bWFyZ2luUmlnaHQ6MH0sMzAwLGZ1bmN0aW9uKCl7cD0hMH0pKTooMDw9cGFyc2VJbnQobC5jc3MoIm1hcmdpbkxlZnQiKSwxMCkmJihsLmNzcyh7Im1hcmdpbi1sZWZ0IjotbC5maW5kKCJsaTpsYXN0LWNoaWxkIikub3V0ZXJXaWR0aCgpfSksbC5maW5kKCJsaTpsYXN0LWNoaWxkIikuaW5zZXJ0QmVmb3JlKGwuZmluZCgibGk6Zmlyc3QtY2hpbGQiKSkpLGwuc3RvcCgpLmFuaW1hdGUo' type='text/javascript'> </script> 
+
+
+</body></html>
